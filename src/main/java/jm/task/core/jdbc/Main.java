@@ -7,11 +7,10 @@ public class Main {
     public static void main(String[] args) {
         UserServiceImpl userService = new UserServiceImpl();
         userService.createUsersTable();
-//        userService.saveUser("Ivan", "Sidorov", (byte) 20);
-//        userService.saveUser("Nikita", "Volkov", (byte) 15);
-//        userService.saveUser("Tolik", "Zubov", (byte) 54);
-//        userService.saveUser("German", "Smirnov", (byte) 77);
-
+        userService.saveUser("Ivan", "Sidorov", (byte) 20);
+        userService.saveUser("Nikita", "Volkov", (byte) 15);
+        userService.saveUser("Tolik", "Zubov", (byte) 54);
+        userService.saveUser("German", "Smirnov", (byte) 77);
         userService.cleanUsersTable();
         userService.dropUsersTable();
 

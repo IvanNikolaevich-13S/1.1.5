@@ -1,26 +1,56 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import javax.security.auth.login.AppConfigurationEntry;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Util {
-    private static Connection connection;
-    // реализуйте настройку соеденения с БД
+    private static final Connection connection;
+    private static final SessionFactory sessionFactory;
+
     private static final String URL = "jdbc:mysql://localhost:3306/firstdb";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
-    public static void ConnectionDb() {
+    static {
+        Configuration configuration = new Configuration();
+        try {
+            configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+            configuration.setProperty("hibernate.connection.username", "root");
+            configuration.setProperty("hibernate.connection.password", "root");
+            configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/firstdb");
 
+            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+            configuration.setProperty("hibernate.show_sql", "true");
+            configuration.setProperty("hibernate.current_session_context_class", "thread");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        sessionFactory = configuration.addAnnotatedClass(User.class).buildSessionFactory();
+
+    }
+
+    static {
         try {
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
     public static Connection getConnection() {
         return connection;
     }
