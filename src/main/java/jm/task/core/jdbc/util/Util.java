@@ -4,6 +4,9 @@ import jm.task.core.jdbc.model.User;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
 import org.hibernate.cfg.Configuration;
 
 import javax.security.auth.login.AppConfigurationEntry;
@@ -32,7 +35,9 @@ public class Util {
         configuration.setProperty("hibernate.dialect ", "org.hibernate.dialect.MySQL8Dialect");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.current_session_context_class", "thread");
-        sessionFactory = configuration.buildSessionFactory();
+        StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
+        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
     }
 
     static {
