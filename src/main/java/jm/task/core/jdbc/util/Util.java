@@ -21,7 +21,17 @@ public class Util {
     private static final String PASSWORD = "root";
 
     static {
+
         Configuration configuration = new Configuration().addAnnotatedClass(User.class);
+
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+        configuration.setProperty("hibernate.connection.username", "root");
+        configuration.setProperty("hibernate.connection.password", "root");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/firstdb");
+
+        configuration.setProperty("hibernate.dialect ", "org.hibernate.dialect.MySQL8Dialect");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.current_session_context_class", "thread");
         sessionFactory = configuration.buildSessionFactory();
     }
 
